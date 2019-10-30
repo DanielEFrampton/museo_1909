@@ -49,4 +49,19 @@ class Curator
       find_photographs_by_artist(artist)
     end
   end
+
+  def load_photographs(csv_path)
+    csv_file = File.open(csv_path)
+    csv_file.readlines.each_with_index do |line, index|
+        next if index == 0
+        split_line = line.split(',')
+        @photographs << Photograph.new({
+             id: split_line[0],
+             name: split_line[1],
+             artist_id: split_line[2],
+             year: split_line[3]
+          })
+    end
+    csv_file.close
+  end
 end
