@@ -3,6 +3,7 @@ require 'minitest/pride'
 require './lib/photograph'
 require './lib/artist'
 require './lib/curator'
+require 'csv'
 
 class CuratorTest < Minitest::Test
 
@@ -156,6 +157,7 @@ class CuratorTest < Minitest::Test
   def test_it_can_find_photographs_taken_between_two_years
     @curator.load_photographs('./data/photographs.csv')
     @curator.load_artists('./data/artists.csv')
-    assert_equal [@photo_1, @photo_5], @curator.photographs_taken_between(1950..1965)
+    assert_equal "Rue Mouffetard, Paris (Boy with Bottles)", @curator.photographs_taken_between(1950..1965)[0].name
+    assert_equal "Child with Toy Hand Grenade in Central Park", @curator.photographs_taken_between(1950..1965)[1].name
   end
 end
