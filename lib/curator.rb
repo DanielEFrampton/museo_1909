@@ -45,5 +45,8 @@ class Curator
   end
 
   def photographs_taken_by_artist_from(country)
+    artists_from_country(country).collect_concat do |artist|
+      find_photographs_by_artist(artist)
+    end
   end
 end
