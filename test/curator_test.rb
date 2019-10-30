@@ -52,7 +52,7 @@ class CuratorTest < Minitest::Test
   end
 
   def test_it_can_add_artist
-    @curator..add_artist(@artist_1)
-    @curator..add_artist(@artist_2)
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
   end
 end
