@@ -109,6 +109,14 @@ class CuratorTest < Minitest::Test
     assert_equal [@artist_3], @curator.artists_with_multiple_photographs
   end
 
+  def test_it_can_find_all_artists_from_given_country
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
+    @curator.add_artist(@artist_3)
+    assert_equal [@artist_2, @artist_3], @curator.artists_from_country("United States")
+    assert_equal [@artist_1], @curator.artists_from_country("France")
+  end
+
   def test_it_can_find_photographs_taken_by_artists_from_given_country
     skip
     @curator.add_artist(@artist_1)
