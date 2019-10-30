@@ -50,34 +50,31 @@ class Curator
     end
   end
 
-  def load_photographs(csv_path)
+  def load_from_file(csv_path, creation_block_name)
     csv_file = File.open(csv_path)
     csv_file.readlines.each_with_index do |line, index|
-        next if index == 0
-        split_line = line.split(',')
-        @photographs << Photograph.new({
-             id: split_line[0],
-             name: split_line[1],
-             artist_id: split_line[2],
-             year: split_line[3]
-          })
+      next if index == 0
+      split_line = line.split(',')
+      send(creation_block_name, split_line)
     end
     csv_file.close
   end
 
+  def photo_creation_block(split_line)
+    @photographs << Photograph.new({ id: split_line[0], name: split_line[1],
+      artist_id: split_line[2], year: split_line[3] })
+  end
+
+  def artist_creation_block(split_line)
+    @artists << Artist.new({ id: split_line[0], name: split_line[1],
+      born: split_line[2], died: split_line[3], country: split_line[4] })
+  end
+
+  def load_photographs(csv_path)
+    load_from_file(csv_path, "photo_creation_block")
+  end
+
   def load_artists(csv_path)
-    csv_file = File.open(csv_path)
-    csv_file.readlines.each_with_index do |line, index|
-        next if index == 0
-        split_line = line.split(',')
-        @artists << Artist.new({
-             id: split_line[0],
-             name: split_line[1],
-             born: split_line[2],
-             died: split_line[3],
-             country: split_line[4]
-          })
-    end
-    csv_file.close
+    load_from_file(csv_path, "artist_creation_block")
   end
 end
