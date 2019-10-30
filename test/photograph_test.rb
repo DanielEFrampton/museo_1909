@@ -11,11 +11,11 @@ class PhotographTest < Minitest::Test
       artist_id: "4",
       year: "1954"
     }
-    photograph = Photograph.new(attributes)
+    @photograph = Photograph.new(attributes)
   end
 
   def test_it_exists
-    assert_instance_of Photograph, photograph
+    assert_instance_of Photograph, @photograph
   end
 
   def test_it_initializes_with_attributes
