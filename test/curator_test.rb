@@ -3,6 +3,7 @@ require 'minitest/pride'
 require './lib/photograph'
 require './lib/artist'
 require './lib/curator'
+require 'csv'
 
 class CuratorTest < Minitest::Test
 
@@ -32,6 +33,12 @@ class CuratorTest < Minitest::Test
          artist_id: "3",
          year: "1927"
     })
+    @photo_5 = Photograph.new ({
+      id: "4",
+      name: "Child with Toy Hand Grenade in Central Park",
+      artist_id: "3",
+      year: "1962"
+      })
     @artist_1 = Artist.new({
         id: "1",
         name: "Henri Cartier-Bresson",
@@ -127,5 +134,30 @@ class CuratorTest < Minitest::Test
     @curator.add_photograph(@photo_4)
     assert_equal [@photo_2, @photo_3, @photo_4], @curator.photographs_taken_by_artist_from("United States")
     assert_equal [], @curator.photographs_taken_by_artist_from("Argentina")
+  end
+
+  def test_it_can_load_photographs_from_file
+    @curator.load_photographs('./data/photographs.csv')
+    assert_equal "1", @curator.photographs[0].id
+    assert_equal "2", @curator.photographs[1].id
+    assert_equal "3", @curator.photographs[2].id
+    assert_equal "4", @curator.photographs[3].id
+  end
+
+  def test_it_can_load_artists_from_file
+    @curator.load_artists('./data/artists.csv')
+    assert_equal "Henri Cartier-Bresson", @curator.find_artist_by_id("1").name
+    assert_equal "Ansel Adams", @curator.find_artist_by_id("2").name
+    assert_equal "Diane Arbus", @curator.find_artist_by_id("3").name
+    assert_equal "Walker Evans", @curator.find_artist_by_id("4").name
+    assert_equal "Manuel Alvarez Bravo", @curator.find_artist_by_id("5").name
+    assert_equal "Bill Cunningham", @curator.find_artist_by_id("6").name
+  end
+
+  def test_it_can_find_photographs_taken_between_two_years
+    @curator.load_photographs('./data/photographs.csv')
+    @curator.load_artists('./data/artists.csv')
+    assert_equal "Rue Mouffetard, Paris (Boy with Bottles)", @curator.photographs_taken_between(1950..1965)[0].name
+    assert_equal "Child with Toy Hand Grenade in Central Park", @curator.photographs_taken_between(1950..1965)[1].name
   end
 end

@@ -49,4 +49,34 @@ class Curator
       find_photographs_by_artist(artist)
     end
   end
+
+  def load_from_file(csv_path, creation_block_name)
+    CSV.foreach(csv_path, headers: true, header_converters: :symbol) do |row|
+      send(creation_block_name, row)
+    end
+  end
+
+  def photo_creation_block(row)
+    @photographs << Photograph.new({ id: row[:id], name: row[:name],
+      artist_id: row[:artist_id], year: row[:year] })
+  end
+
+  def artist_creation_block(row)
+    @artists << Artist.new({ id: row[:id], name: row[:name],
+      born: row[:born], died: row[:died], country: row[:country] })
+  end
+
+  def load_photographs(csv_path)
+    load_from_file(csv_path, "photo_creation_block")
+  end
+
+  def load_artists(csv_path)
+    load_from_file(csv_path, "artist_creation_block")
+  end
+
+  def photographs_taken_between(year_range)
+    @photographs.find_all do |photo|
+      year_range.include?(photo.year.to_i)
+    end
+  end
 end
