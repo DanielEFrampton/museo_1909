@@ -32,6 +32,12 @@ class CuratorTest < Minitest::Test
          artist_id: "3",
          year: "1927"
     })
+    @photo_5 = Photograph.new ({
+      id: "4",
+      name: "Child with Toy Hand Grenade in Central Park",
+      artist_id: "3",
+      year: "1962"
+      })
     @artist_1 = Artist.new({
         id: "1",
         name: "Henri Cartier-Bresson",
@@ -147,4 +153,9 @@ class CuratorTest < Minitest::Test
     assert_equal "Bill Cunningham", @curator.find_artist_by_id("6").name
   end
 
+  def test_it_can_find_photographs_taken_between_two_years
+    @curator.load_photographs('./data/photographs.csv')
+    @curator.load_artists('./data/artists.csv')
+    assert_equal [@photo_1, @photo_5], @curator.photographs_taken_between(1950..1965)
+  end
 end
