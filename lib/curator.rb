@@ -64,4 +64,20 @@ class Curator
     end
     csv_file.close
   end
+
+  def load_artists(csv_path)
+    csv_file = File.open(csv_path)
+    csv_file.readlines.each_with_index do |line, index|
+        next if index == 0
+        split_line = line.split(',')
+        @artists << Artist.new({
+             id: split_line[0],
+             name: split_line[1],
+             born: split_line[2],
+             died: split_line[3],
+             country: split_line[4]
+          })
+    end
+    csv_file.close
+  end
 end
