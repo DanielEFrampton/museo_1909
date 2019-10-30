@@ -131,6 +131,15 @@ class CuratorTest < Minitest::Test
 
   def test_it_can_load_photographs_from_file
     @curator.load_photographs('./data/photographs.csv')
+    assert_equal "1", @curator.photographs[0].id
+    assert_equal "2", @curator.photographs[1].id
+    assert_equal "3", @curator.photographs[2].id
+    assert_equal "4", @curator.photographs[3].id
+  end
+
+  def test_it_can_load_artists_from_file
+    skip
+    @curator.load_artists('./data/photographs.csv')
     assert_equal "Henri Cartier-Bresson", @curator.find_artist_by_id("1").name
     assert_equal "Ansel Adams", @curator.find_artist_by_id("2").name
     assert_equal "Diane Arbus", @curator.find_artist_by_id("3").name
