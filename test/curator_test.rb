@@ -138,8 +138,7 @@ class CuratorTest < Minitest::Test
   end
 
   def test_it_can_load_artists_from_file
-    skip
-    @curator.load_artists('./data/photographs.csv')
+    @curator.load_artists('./data/artists.csv')
     assert_equal "Henri Cartier-Bresson", @curator.find_artist_by_id("1").name
     assert_equal "Ansel Adams", @curator.find_artist_by_id("2").name
     assert_equal "Diane Arbus", @curator.find_artist_by_id("3").name
