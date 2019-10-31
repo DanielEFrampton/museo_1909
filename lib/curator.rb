@@ -35,7 +35,9 @@ class Curator
   end
 
   def photographs_taken_by_artist_from(country)
-    artists_from_country(country).flat_map { |artist| find_photographs_by_artist(artist) }
+    artists_from_country(country).flat_map do |artist|
+      find_photographs_by_artist(artist)
+    end
   end
 
   def load_photographs(csv_path)
@@ -52,5 +54,12 @@ class Curator
 
   def photographs_taken_between(year_range)
     @photographs.find_all { |photo| year_range.include?(photo.year.to_i) }
+  end
+
+  def artists_photographs_by_age(artist)
+    find_photographs_by_artist(artist).reduce({}) do |hash, photo|
+      hash[photo.year.to_i - artist.born.to_i] = photo.name
+      hash
+    end
   end
 end
