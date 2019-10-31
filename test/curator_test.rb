@@ -160,4 +160,13 @@ class CuratorTest < Minitest::Test
     assert_equal "Rue Mouffetard, Paris (Boy with Bottles)", @curator.photographs_taken_between(1950..1965)[0].name
     assert_equal "Child with Toy Hand Grenade in Central Park", @curator.photographs_taken_between(1950..1965)[1].name
   end
+
+  def test_it_can_find_artists_photographs_by_age_as_hash
+    @curator.load_photographs('./data/photographs.csv')
+    @curator.load_artists('./data/artists.csv')
+    diane_arbus = @curator.find_artist_by_id("3")
+    expected_hash = {44=>"Identical Twins, Roselle, New Jersey",
+                     39=>"Child with Toy Hand Grenade in Central Park"}
+    assert_equal expected_hash, @curator.artists_photographs_by_age(diane_arbus)
+  end
 end
